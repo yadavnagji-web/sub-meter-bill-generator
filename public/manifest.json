@@ -1,15 +1,15 @@
 {
-  "name": "Sub Meter Bill Generator",
-  "short_name": "Bill Generator",
-  "description": "AVVNL Sub Meter Electricity Bill Generator",
+  "name": "YADAV COMPLEX SAKODARA - बिजली बिल",
+  "short_name": "बिजली बिल",
+  "description": "यादव कॉम्प्लेक्स साकोदरा - 8 फ्लैट्स सब-मीटर बिजली बिल कैलकुलेटर",
   "start_url": "/",
-  "id": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#1565c0",
-  "theme_color": "#1565c0",
-  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#1e3a8a",
+  "orientation": "portrait",
   "lang": "hi",
-  "categories": ["utilities", "productivity"],
+  "categories": ["utilities", "productivity", "business"],
   "icons": [
     {
       "src": "/icons/icon-72.png",
@@ -44,8 +44,5 @@
       "type": "image/svg+xml",
       "purpose": "any"
     }
-  ],
-  "screenshots": [],
-  "related_applications": [],
-  "prefer_related_applications": false
+  ]
 }

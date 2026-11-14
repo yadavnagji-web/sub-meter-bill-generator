@@ -1,239 +1,77 @@
-# ⚡ Sub Meter Bill Generator — AVVNL
+# ⚡ YADAV COMPLEX SAKODARA - Sub-Meter Electricity Bill Generator (PWA)
 
-A professional Hindi PWA (Progressive Web App) + Node.js backend that fetches AVVNL electricity bills via the MSR Pay API.
-
----
-
-## 🔐 Security Architecture
-
-```
-Browser (PWA)
-    │
-    │  POST /api/avvnl/bill
-    │  { kNumber: "130531010333" }   ← Only sends K-Number, never API key
-    ▼
-Express Server (Your Machine / VPS)
-    │
-    │  GET https://www.bijlimitraavvnl.com/api/Billfetch
-    │  username=R5296890
-    │  apikey=NAGJ112839007302    ← API key ONLY lives here, in .env
-    │  number=130531010333
-    │  operator=AVVR
-    ▼
-MSR Pay AVVNL API
-```
-
-**API credentials are NEVER sent to or stored in the browser.**
+**Mo. No: 8384980657, 9982151938**  
+A modern, zero-mismatch sub-meter electricity bill management system designed specifically for **Yadav Complex Sakodara (8 Flats)**. Built as an offline-first Progressive Web App (PWA), fully deployable to **Vercel** and publishable on **GitHub**.
 
 ---
 
-## 📁 Project Structure
+## 🌟 Key Features
 
-```
-d:\Flate Bill\
-├── server.js              # Express server (entry point)
-├── package.json
-├── .env                   # ⚠️ NEVER commit — API credentials here
-├── .env.example           # Safe template for .env
-├── .gitignore
-│
-├── api/
-│   └── avvnl.js           # /api/avvnl/bill proxy route
-│
-└── public/                # PWA frontend (static files)
-    ├── index.html
-    ├── manifest.json
-    ├── sw.js              # Service Worker
-    ├── css/
-    │   ├── app.css        # Main styles
-    │   └── print.css      # A4 print styles
-    └── js/
-        ├── normalizeAVVNL.js    # Response field normalizer
-        ├── avvnlService.js      # Frontend API service
-        ├── billHistory.js       # LocalStorage history manager
-        ├── pdfGenerator.js      # PDF/Print generator
-        └── app.js               # Main app controller
-```
+1. **Zero Mismatch Guarantee (सटीक मिलान):**
+   - Employs the **Hare-Niemeyer (Largest Remainder) Algorithm** to guarantee that the sum of all flat bills strictly equals the government bill amount (e.g. ₹4,970) to the exact rupee.
+   - All external figures and PDF printouts display **pure integers (दशमलव मुक्त)** without any trailing decimals.
 
----
+2. **Both Readings 100% Editable (गत पठन व वर्तमान पठन दोनों सम्पादन योग्य):**
+   - Flat readings can be directly edited anytime in the interactive table:
+     - **वर्तमान पठन (मीटर रीडिंग):** Enter the physical meter reading read today (e.g. 2938, 2200, 2423, etc.).
+     - **गत पठन:** Displays the previous reading (e.g. 2920) and is fully editable.
+     - **बिल पठन:** Displays the 15-day gap adjusted reading after deducting common units (e.g. 2934), so that `वर्तमान - गत = यूनिट` ($2934 - 2920 = 14$).
 
-## ⚙️ Environment Variables
+3. **Automatic Rollover to Next Month (ऑटो-ट्रांसफर):**
+   - Automatically archives the completed month's record into history.
+   - Automatically transfers each flat's billed reading (`2934`, `2184`, `2408`, `2745`, `3184`, `2010`, `1547`, `2452`) into the next month's `गत पठन` (previous reading), so the user never has to re-type previous readings.
 
-Copy `.env.example` to `.env` and fill in:
+4. **Colourful & Attractive Print & PDF Designs:**
+   - **A4 Master Sheet (COMPLEX LIGHT BILL):** Vibrant royal blue gradient header, color-coded badges (Green for units, Purple for CCTV/motor, Radiant Gold for total amount), and an amber-framed summary banner.
+   - **8 Tenant Cut Slips (किरायेदार पर्चियां):** 2×4 grid on A4 with scissor cutting guidelines (`✂ - - -`), itemized consumption, motor share, and bold total due box.
 
-```env
-AVVNL_USERNAME=R5296890
-AVVNL_API_KEY=YOUR_API_KEY_HERE
-PORT=3000
-NODE_ENV=development
-AVVNL_API_BASE=https://www.bijlimitraavvnl.com/api
-ALLOWED_ORIGINS=http://localhost:3000
-API_TIMEOUT=15000
-RATE_LIMIT_MAX=30
-```
+5. **PWA Mobile App (मोबाइल पर इनस्टॉल एवं ऑफलाइन रन):**
+   - Installable on Android (Chrome) and iOS (Safari) with native standalone app experience.
+   - Service worker provides instant offline support.
 
-> ⚠️ **NEVER commit `.env` to Git.** It's already in `.gitignore`.
+6. **Instant WhatsApp Receipts:**
+   - Generate one-click formatted WhatsApp bills and send directly to tenants.
 
 ---
 
-## 🚀 How to Run Locally
+## 📊 Live Sample Data (माह नवम्बर 2026)
 
-### Prerequisites
-- Node.js 18+
-- npm
+- **सरकारी कुल यूनिट:** 607 | **सरकारी बिल राशि:** ₹4,970 | **कॉमन मोटर/CCTV:** 90 यूनिट  
+- **कमरों की कुल यूनिट:** 517 ($607 - 90$)
 
-### Steps
+| # | Room | वर्तमान पठन (मीटर) | गत पठन | बिल पठन | यूनिट | दर | राशि (₹) | CCTV मोटर (₹) | योग (₹) |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | Room 1 | 2938 | 2920 | 2934 | 14 | 8 | 115 | 92 | 207 |
+| 2 | Room 2 | 2200 | 2127 | 2184 | 57 | 8 | 467 | 92 | 559 |
+| 3 | Room 3 | 2423 | 2352 | 2408 | 56 | 8 | 459 | 92 | 551 |
+| 4 | Room 4 | 2760 | 2690 | 2745 | 55 | 8 | 450 | 92 | 542 |
+| 5 | Room 5 | 3196 | 3139 | 3184 | 45 | 8 | 368 | 92 | 460 |
+| 6 | Room 6 | 2045 | 1883 | 2010 | 127 | 8 | 1040 | 92 | 1132 |
+| 7 | Room 7 | 1572 | 1453 | 1547 | 94 | 8 | 770 | 92 | 862 |
+| 8 | Room 8 | 2471 | 2383 | 2452 | 69 | 8 | 565 | 92 | 657 |
+| 9 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 10| 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| **Σ**| **कुल** | **658** | - | - | **517** | **64** | **4234** | **736** | **4970** |
 
+---
+
+## 🚀 Deployment
+
+### 1. GitHub
+The repository is published on GitHub:
 ```bash
-# 1. Go to project folder
-cd "d:\Flate Bill"
+git push origin main
+```
 
-# 2. Install dependencies
+### 2. Vercel Deployment
+1. Connect your GitHub repository to [Vercel](https://vercel.com).
+2. Set Root Directory to `./` (or leave default).
+3. Vercel uses `vercel.json` to automatically serve `/public` assets and serverless routes.
+4. Click **Deploy** — your app is live on HTTPS with automatic SSL!
+
+### 3. Local Development
+```bash
 npm install
-
-# 3. Create .env file
-copy .env.example .env
-# Edit .env and add your AVVNL_API_KEY
-
-# 4. Start the server
 npm start
-
-# For development with auto-restart:
-npm run dev
+# Opens on http://localhost:3000
 ```
-
-Open: **http://localhost:3000**
-
----
-
-## 🏗️ How to Deploy
-
-### Option 1: VPS / Linux Server (Recommended)
-
-```bash
-# On your server
-git clone <your-repo>
-cd sub-meter-bill-generator
-npm install --production
-
-# Create .env on the server (don't upload from local)
-nano .env
-# Add AVVNL_API_KEY, PORT=80, NODE_ENV=production
-
-# Use PM2 for production
-npm install -g pm2
-pm2 start server.js --name "bill-generator"
-pm2 save
-pm2 startup
-```
-
-### Option 2: Railway / Render / Heroku
-
-1. Connect your GitHub repository
-2. Set environment variables in the dashboard:
-   - `AVVNL_USERNAME` = `R5296890`
-   - `AVVNL_API_KEY` = your key
-   - `NODE_ENV` = `production`
-   - `ALLOWED_ORIGINS` = your domain
-
-> **Important:** The MSR Pay API requires your **server's IP address** to be whitelisted.
-> Contact MSR Pay support at 9799693398 / mahendrasinghrathore986@gmail.com
-> to whitelist your server's IP.
-
-### Option 3: Vercel (Serverless)
-
-The current setup uses Express. For Vercel, you would need to adapt `api/avvnl.js` to a serverless function format. See Vercel docs.
-
----
-
-## 🔑 How to Configure AVVNL API Credentials
-
-1. Log in to https://www.bijlimitraavvnl.com
-2. Go to API Key section
-3. Copy your API key
-4. Add to `.env`: `AVVNL_API_KEY=your_key_here`
-5. Restart the server
-
----
-
-## 🧪 How to Test
-
-### Test the API endpoint manually
-
-```bash
-# Test health
-curl http://localhost:3000/api/health
-
-# Test bill fetch (POST with K-Number)
-curl -X POST http://localhost:3000/api/avvnl/bill \
-  -H "Content-Type: application/json" \
-  -d '{"kNumber": "130531010333"}'
-
-# Developer debug endpoint (dev mode only)
-curl "http://localhost:3000/api/avvnl/bill?kNumber=130531010333"
-```
-
-### Test with browser
-1. Open http://localhost:3000
-2. Enter K-Number: `130531010333`
-3. Click "Save K-Number"
-4. Click "⚡ Fetch Latest Bill"
-
-### Important: IP Whitelisting
-The MSR Pay API requires your server's IP to be whitelisted.
-- When running locally: your home/office IP
-- When deployed: your VPS/cloud server IP
-
-Until whitelisted, API returns: `"IP not matched!!"`
-
----
-
-## ⚠️ Known Limitation: IP Whitelisting
-
-The AVVNL MSR Pay API requires IP whitelisting. The error `"IP not matched!!"` means your server's IP is not registered with MSR Pay.
-
-**Solution:** Contact MSR Pay at:
-- Phone: 9799693398
-- Email: mahendrasinghrathore986@gmail.com
-- Request to whitelist your server/machine IP
-
----
-
-## 🔧 Developer Mode
-
-When running on `localhost`, the app shows:
-- 🔧 Developer button in header
-- API test screen in Settings tab
-- Raw JSON response display
-- Normalized response display
-- API credentials shown as `**************` (masked)
-
----
-
-## 📱 PWA Features
-
-- ✅ Installable on Android/iOS/Desktop
-- ✅ Offline support (cached bills shown when offline)
-- ✅ Hindi UI
-- ✅ Auto-fetch reminder (configurable interval)
-- ✅ Bill history (last 24 bills)
-- ✅ Print A4 bill
-- ✅ Download PDF (via browser print dialog)
-- ✅ Rate limiting (30 requests per 15 minutes per IP)
-- ✅ Request timeout (15 seconds default)
-- ✅ Debounce (5 seconds minimum between fetches)
-
----
-
-## 🛡️ Security Checklist
-
-- [x] API key stored only in `.env` (server-side)
-- [x] `.env` in `.gitignore`
-- [x] No API key in any frontend JS file
-- [x] No API key in localStorage
-- [x] CORS restricted to configured origins in production
-- [x] Helmet.js security headers
-- [x] Rate limiting on all API routes
-- [x] K-Number validation (server-side + client-side)
-- [x] Error messages never expose credentials or stack traces
-- [x] Developer debug endpoint disabled in production
