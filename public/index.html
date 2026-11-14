@@ -22,7 +22,7 @@
   <!-- PDF.js for Client-Side PDF Auto-Extraction (System 2) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   
-  <link rel="stylesheet" href="style.css?v=3.0" />
+  <link rel="stylesheet" href="style.css?v=3.1" />
   <title>COMPLEX LIGHT BILL - YADAV COMPLEX SAKODARA</title>
   
   <script>
@@ -38,183 +38,127 @@
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header>
+  <!-- ULTRA-SLIM COMPACT HEADER -->
+  <header class="app-header">
     <div class="header-brand">
-      <div class="logo-icon">⚡</div>
-      <div>
-        <h1>YADAV COMPLEX SAKODARA</h1>
-        <div class="sub-title">
-          <span>🏢 8 फ्लैट्स सब-मीटर बिजली बिल</span>
-          <span>•</span>
-          <span>📞 Mo. No: <b>8384980657, 9982151938</b></span>
-        </div>
-      </div>
+      <span class="logo-icon">⚡</span>
+      <span class="brand-name">YADAV COMPLEX</span>
+      <span class="brand-phone">📞 8384980657, 9982151938</span>
     </div>
     <div class="header-actions">
-      <button id="btn-force-reload" class="btn btn-outline" style="border-color:#fff; color:#fff;" title="कैश साफ़ करके नया वर्जन लोड करें">
-        🔄 ताज़ा रीलोड
+      <button id="btn-header-preview" class="btn btn-sm btn-secondary" title="रंगीन A4 Common Bill प्रीव्यू देखें">
+        👁️ प्रीव्यू
       </button>
-      <button id="btn-header-preview" class="btn btn-secondary" title="रंगीन व आकर्षक Common Bill का सीधा प्रीव्यू देखें">
-        👁️ Common Sheet प्रीव्यू
+      <button id="btn-view-history" class="btn btn-sm btn-outline" style="border-color:rgba(255,255,255,0.7); color:#fff;" title="पुराने बिल रिकॉर्ड्स">
+        📜 इतिहास
       </button>
-      <button id="btn-view-history" class="btn btn-outline" style="border-color:#fff; color:#fff;" title="पुराने बिल रिकॉर्ड्स">
-        📜 पुराना इतिहास
+      <button id="btn-force-reload" class="btn btn-sm btn-outline" style="border-color:rgba(255,255,255,0.7); color:#fff;" title="ताज़ा रीलोड करें">
+        🔄 रीलोड
       </button>
-      <button id="btn-install-app" class="btn btn-install" title="ऐप मोबाइल में इंस्टॉल करें">
-        📲 App Install
+      <button id="btn-install-app" class="btn btn-sm btn-install" title="ऐप मोबाइल में इंस्टॉल करें">
+        📲 Install
       </button>
     </div>
   </header>
 
   <div class="container">
 
-    <!-- ZERO-MISMATCH LIVE VERIFICATION CARD -->
-    <div class="card" id="match-card" style="border-left: 5px solid #2e7d32; background: #ffffff;">
-      <div class="card-header" style="margin-bottom: 12px; padding-bottom: 8px;">
-        <div class="card-title" style="color: #1b5e20;">
-          <span>⚖️ 100% सरकारी बिल मिलान सत्यापन (Zero Mismatch Guarantee)</span>
-        </div>
-        <div id="match-status-badge" class="pdf-status-badge" style="background:#e8f5e9; color:#2e7d32; font-size:0.85rem;">
-          ✅ सरकारी बिल से 1 पैसा भी कम या ज्यादा नहीं
-        </div>
+    <!-- COMPACT 1-LINE ZERO-MISMATCH LIVE STATUS STRIP -->
+    <div class="compact-match-bar" id="match-card">
+      <div class="match-bar-left">
+        <span id="match-status-badge" class="badge-pill">✅ 100% सटीक मिलान</span>
+        <span class="match-text">
+          सरकारी: <b id="match-govt-units">607</b> यूनिट (<b id="match-govt-amount">₹4,970</b>) = कमरे: <b id="match-calc-units">517 + 90</b> (<b id="match-calc-amount">₹4,970</b>)
+        </span>
+        <span id="diff-amount-display" class="match-diff">अंतर: ₹0 ✅</span>
+        <span id="diff-units-display" style="display:none;"></span>
       </div>
-
-      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px;">
-        <div style="background:#f1f8e9; padding: 12px; border-radius: 8px; border: 1px solid #c5e1a5;">
-          <div style="font-size:0.82rem; color:#33691e; font-weight:700;">📊 कुल यूनिट मिलान (Total Units)</div>
-          <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:0.95rem;">
-            <span>सरकारी मीटर: <b id="match-govt-units">607</b></span>
-            <span>रूम + 90 कॉमन: <b id="match-calc-units" style="color:#1b5e20;">517 + 90 = 607</b></span>
-          </div>
-          <div style="font-size:0.85rem; font-weight:700; margin-top:4px; color:#2e7d32;" id="diff-units-display">
-            कमरे: 517 + मोटर/CCTV: 90 = 607 यूनिट (सटीक मिलान ✅)
-          </div>
-        </div>
-
-        <div style="background:#e8f5e9; padding: 12px; border-radius: 8px; border: 1px solid #a5d6a7;">
-          <div style="font-size:0.82rem; color:#1b5e20; font-weight:700;">💰 कुल बिल राशि मिलान (Total Amount)</div>
-          <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:0.95rem;">
-            <span>सरकारी बिल: <b id="match-govt-amount">₹4,970</b></span>
-            <span>फ्लैट्स कुल योग: <b id="match-calc-amount" style="color:#1565c0;">₹4,970</b></span>
-          </div>
-          <div style="font-size:0.85rem; font-weight:700; margin-top:4px; color:#2e7d32;" id="diff-amount-display">
-            अंतर: ₹0 (100% सटीक मिलान ✅)
-          </div>
-        </div>
-
-        <div style="background:#f0fdf4; padding: 12px; border-radius: 8px; border: 1px solid #86efac; display:flex; flex-direction:column; justify-content:center;">
-          <div style="font-size:0.82rem; font-weight:700; color:#166534; display:flex; align-items:center; gap:6px;">
-            <span>🔄 ऑटो-ट्रांसफर (Auto-Rollover):</span>
-            <span class="badge-active">सक्रिय ✅</span>
-          </div>
-          <div style="font-size:0.88rem; font-weight:700; color:#1e3a8a; margin-top:4px;">
-            कटौतियों के बाद वाली रीडिंग स्वतः अगले माह का गत पठन बनेगी
-          </div>
-          <div style="font-size:0.78rem; color:#555; margin-top:2px;">
-            गत पठन व वर्तमान पठन दोनों कभी भी बदले (Edit) जा सकते हैं
-          </div>
-        </div>
+      <div class="match-bar-right">
+        <span class="badge-active">🔄 ऑटो-ट्रांसफर चालू</span>
       </div>
     </div>
 
-    <!-- SYSTEM 2: SMART PDF DRAG & DROP (सरकारी बिल PDF अपलोड) -->
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <span>📄 [System 2] सरकारी बिल PDF से ऑटो-रीड (Smart PDF Extract)</span>
+    <!-- COMPACT COLLAPSIBLE SETTINGS DRAWER (SYSTEM 2 & SYSTEM 3) -->
+    <details class="settings-drawer" id="settings-drawer">
+      <summary class="settings-summary">
+        <div class="summary-left">
+          <span>⚙️ <b>सरकारी बिल व PDF सेटिंग</b></span>
+          <span class="summary-sub">माह: <b id="summary-month">नवम्बर 2026</b> • सरकारी यूनिट: <b>607</b> • राशि: <b>₹4,970</b> • मोटर लेस: <b>90</b></span>
         </div>
-        <span style="font-size:0.85rem; color:var(--text-muted);">AVVNL / डिस्कॉम बिल PDF खींचें या चुनें</span>
-      </div>
+        <span class="toggle-hint">बदलने / PDF अपलोड के लिए क्लिक करें ▾</span>
+      </summary>
 
-      <div id="pdf-dropzone" class="dropzone">
-        <div class="dropzone-icon">📥</div>
-        <h3>सरकारी बिल PDF यहाँ खींचकर छोड़ें (Drag & Drop) या क्लिक करें</h3>
-        <p>अपनी बिजली बिल PDF (जैसे <code>billprint.pdf</code>) चुनें — गत पठन, वर्तमान पठन, कुल यूनिट, राशि और माह ऑटो भर जाएगा!</p>
-        <input type="file" id="pdf-file-input" accept="application/pdf" style="display: none;" />
-        <div id="pdf-extract-badge" class="pdf-status-badge hidden">
-          ✅ <span id="pdf-extract-text">बिल विवरण सफलता पूर्वक लोड हुआ!</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- SYSTEM 3: MANUAL INPUT & BILL CONTROLS (सरकारी बिल विवरण एवं दर) -->
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          <span>⚙️ [System 3] सरकारी बिल विवरण एवं दर सेटिंग (Govt Bill Details)</span>
-        </div>
-        <div id="rate-mode-badge" style="font-size:0.85rem; font-weight:600; color:#1565c0; background:#e3f2fd; padding:4px 10px; border-radius:12px;">
-          ⚡ कुल सरकारी बिल राशि ÷ कुल सरकारी यूनिट
-        </div>
-      </div>
-
-      <div class="form-grid">
-        <div class="form-group">
-          <label>बिल माह (Billing Month)</label>
-          <input type="text" id="bill-month" class="form-control" value="नवम्बर 2026" placeholder="जैसे नवम्बर 2026" />
+      <div class="settings-body">
+        <!-- SYSTEM 2: PDF DRAG & DROP -->
+        <div id="pdf-dropzone" class="dropzone-compact">
+          <span class="dropzone-icon-sm">📥</span>
+          <div>
+            <b>सरकारी बिल PDF खींचें या चुनें:</b>
+            <span style="color:var(--text-muted); font-size:0.82rem;">गत, वर्तमान, यूनिट, राशि व माह ऑटो भर जाएगा।</span>
+          </div>
+          <input type="file" id="pdf-file-input" accept="application/pdf" style="display: none;" />
+          <div id="pdf-extract-badge" class="pdf-status-badge hidden">
+            ✅ <span id="pdf-extract-text">बिल विवरण सफलता पूर्वक लोड हुआ!</span>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label>सरकारी मीटर गत पठन (Prev)</label>
-          <input type="number" id="govt-prev" class="form-control" value="5493" placeholder="जैसे 5493 या 4792" />
-        </div>
-
-        <div class="form-group">
-          <label>सरकारी मीटर वर्तमान (Curr)</label>
-          <input type="number" id="govt-curr" class="form-control" value="6100" placeholder="जैसे 6100 या 5493" />
-        </div>
-
-        <div class="form-group">
-          <label>सरकारी कुल यूनिट (Govt Units)</label>
-          <input type="number" id="govt-units" class="form-control" value="607" placeholder="जैसे 607 या 701" />
-        </div>
-
-        <div class="form-group">
-          <label>सरकारी कुल बिल राशि (₹ Govt Amount)</label>
-          <input type="number" id="govt-amount" class="form-control" value="4970" placeholder="जैसे 4970 या 5799" />
-        </div>
-
-        <div class="form-group">
-          <label>लागू यूनिट दर (₹ Rate)</label>
-          <div style="display:flex; gap:6px;">
-            <input type="number" id="flat-rate" class="form-control" value="8.19" step="0.01" style="font-weight:bold; color:#0d47a1;" />
-            <button id="btn-rate-auto" class="btn btn-outline" style="padding:4px 8px; font-size:0.75rem;" title="सरकारी प्रभावी दर सेट करें">ऑटो दर</button>
-            <button id="btn-rate-9" class="btn btn-outline" style="padding:4px 8px; font-size:0.75rem;" title="दर ₹9.00 सेट करें">₹9.00</button>
+        <!-- SYSTEM 3: MANUAL INPUTS -->
+        <div class="form-grid-compact" style="margin-top:10px;">
+          <div class="form-group-sm">
+            <label>बिल माह:</label>
+            <input type="text" id="bill-month" class="form-control-sm" value="नवम्बर 2026" />
+          </div>
+          <div class="form-group-sm">
+            <label>सरकारी गत पठन:</label>
+            <input type="number" id="govt-prev" class="form-control-sm" value="5493" />
+          </div>
+          <div class="form-group-sm">
+            <label>सरकारी वर्तमान:</label>
+            <input type="number" id="govt-curr" class="form-control-sm" value="6100" />
+          </div>
+          <div class="form-group-sm">
+            <label>सरकारी कुल यूनिट:</label>
+            <input type="number" id="govt-units" class="form-control-sm" value="607" />
+          </div>
+          <div class="form-group-sm">
+            <label>सरकारी बिल राशि (₹):</label>
+            <input type="number" id="govt-amount" class="form-control-sm" value="4970" />
+          </div>
+          <div class="form-group-sm">
+            <label>यूनिट दर (₹):</label>
+            <div style="display:flex; gap:4px;">
+              <input type="number" id="flat-rate" class="form-control-sm" value="8.19" step="0.01" style="width:65px; font-weight:bold; color:#1e3a8a;" />
+              <button id="btn-rate-auto" class="btn btn-xs btn-outline">ऑटो</button>
+              <button id="btn-rate-9" class="btn btn-xs btn-outline">₹9</button>
+            </div>
+          </div>
+          <div class="form-group-sm">
+            <label>मोटर लेस यूनिट्स:</label>
+            <div style="display:flex; gap:4px; align-items:center;">
+              <input type="number" id="less-units-input" value="90" min="0" max="300" step="1" class="form-control-sm" style="width:55px; font-weight:bold; color:#15803d; text-align:center;" />
+              <button id="btn-toggle-less-90" class="btn btn-xs btn-outline">90</button>
+              <button id="btn-toggle-less-0" class="btn btn-xs btn-outline">0</button>
+            </div>
           </div>
         </div>
       </div>
+    </details>
 
-      <!-- 90 UNITS PROPORTIONAL RULE SETTING BANNER -->
-      <div class="rule-banner">
-        <div style="flex:1;">
-          <span>💡 <b>90 यूनिट्स मोटर लेस नियम:</b> सभी 8 फ्लैट्स के उपभोग अनुसार <b>90 यूनिट लेस</b> की गई हैं और CCTV/मोटर शेयर सभी में बराबर जुड़कर <b>सरकारी बिल से ₹0 का भी अंतर नहीं रहता!</b></span>
-        </div>
-        <div style="display:flex; align-items:center; gap:8px;">
-          <label style="font-size:0.85rem; font-weight:700; color:#1b5e20;">मोटर लेस यूनिट्स:</label>
-          <input type="number" id="less-units-input" value="90" min="0" max="300" step="1" style="width:70px; padding:4px 6px; border:1px solid #4caf50; border-radius:4px; font-weight:bold; text-align:center;" />
-          <span style="font-weight:bold; color:#1b5e20;">यूनिट</span>
-          <button id="btn-toggle-less-90" class="btn btn-outline" style="font-size:0.75rem; padding:3px 8px;" title="90 यूनिट्स लेस">90 यूनिट्स</button>
-          <button id="btn-toggle-less-0" class="btn btn-outline" style="font-size:0.75rem; padding:3px 8px;" title="सीधी रीडिंग (0 लेस)">0 लेस</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- FLATS SUB-METER CALCULATION TABLE (गत पठन व वर्तमान पठन दोनों EDITABLE) -->
-    <div class="card">
-      <div class="card-header">
+    <!-- FLATS SUB-METER CALCULATION TABLE (FRONT & CENTER - MAXIMUM VISIBILITY) -->
+    <div class="card card-table">
+      <div class="card-header card-header-compact">
         <div class="card-title">
-          <span>🔢 COMPLEX LIGHT BILL (8 फ्लैट्स सब-मीटर गणना तालिका)</span>
+          <span>🔢 <b>COMPLEX LIGHT BILL</b> (8 फ्लैट्स सब-मीटर तालिका)</span>
         </div>
-        <div style="display:flex; gap:8px; flex-wrap:wrap;">
-          <button id="btn-quick-fill-jpg" class="btn btn-outline" style="font-size:0.8rem; padding:5px 10px;" title="ताज़ा लाइव रीडिंग पुनः लोड करें">
-            🔄 लाइव रीडिंग रीसेट
-          </button>
-          <button id="btn-auto-rollover-quick" class="btn btn-success" style="font-size:0.8rem; padding:5px 12px;" title="इस माह को सेव करके अगले माह का गत पठन स्वतः लोड करें">
+        <div class="header-action-btns">
+          <button id="btn-auto-rollover-quick" class="btn btn-sm btn-success" title="इस माह को सेव करके अगले माह का गत पठन स्वतः लोड करें">
             ⚡ अगला माह शुरू करें (Auto-Rollover)
           </button>
-          <button id="btn-preview-sheet-top" class="btn btn-secondary" style="font-size:0.8rem; padding:5px 12px;" title="रंगीन व आकर्षक Common Bill देखें">
+          <button id="btn-preview-sheet-top" class="btn btn-sm btn-secondary" title="रंगीन व आकर्षक Common Bill देखें">
             👁️ रंगीन Sheet प्रीव्यू
+          </button>
+          <button id="btn-quick-fill-jpg" class="btn btn-sm btn-outline" title="ताज़ा लाइव रीडिंग पुनः लोड करें">
+            🔄 रीसेट
           </button>
         </div>
       </div>
@@ -224,17 +168,17 @@
           <thead>
             <tr>
               <th style="width: 35px;">#</th>
-              <th style="width: 65px;">Room</th>
-              <th style="width: 120px;" title="आज मीटर में दिखी रीडिंग (Editable)">वर्तमान पठन (मीटर)</th>
-              <th style="width: 115px;" title="पिछली रीडिंग (Editable - ऑटो ट्रांसफर होती है)">गत पठन</th>
-              <th style="width: 105px;" title="कटौती बाद बिलिंग पठन (वर्तमान - गत = यूनिट)">बिल पठन</th>
-              <th style="width: 85px;" id="th-unit-col">यूनिट</th>
-              <th style="width: 65px;">दर</th>
-              <th style="width: 95px;">राशि (₹)</th>
-              <th style="width: 105px;">CCTV मोटर</th>
-              <th style="width: 110px;">योग (₹)</th>
-              <th style="width: 115px;">किरायेदार का नाम</th>
-              <th style="width: 95px;">Action</th>
+              <th style="width: 60px;">Room</th>
+              <th style="width: 110px;" title="आज मीटर में दिखी रीडिंग (Editable)">वर्तमान पठन</th>
+              <th style="width: 105px;" title="पिछली रीडिंग (Editable - ऑटो ट्रांसफर होती है)">गत पठन</th>
+              <th style="width: 95px;" title="कटौती बाद बिलिंग पठन (वर्तमान - गत = यूनिट)">बिल पठन</th>
+              <th style="width: 80px;" id="th-unit-col">यूनिट</th>
+              <th style="width: 60px;">दर</th>
+              <th style="width: 90px;">राशि (₹)</th>
+              <th style="width: 100px;">CCTV मोटर</th>
+              <th style="width: 105px;">योग (₹)</th>
+              <th style="width: 110px;">किरायेदार का नाम</th>
+              <th style="width: 90px;">Action</th>
             </tr>
           </thead>
           <tbody id="flats-tbody">
@@ -244,7 +188,7 @@
             <tr class="total-row">
               <td><strong>Σ</strong></td>
               <td></td>
-              <td id="tot-raw-meter" style="font-weight:700; color:#555;">658</td>
+              <td id="tot-raw-meter" style="font-weight:700; color:#475569;">658</td>
               <td></td>
               <td id="tot-adj-curr" style="font-weight:700; color:#1e3a8a;">-</td>
               <td id="tot-units" class="cell-billable">517</td>
@@ -252,35 +196,35 @@
               <td id="tot-rashi" class="cell-amount">4234</td>
               <td id="tot-cctv">736</td>
               <td id="tot-yog" class="cell-amount" style="font-size:1.15rem; color:#1e3a8a;">₹4970</td>
-              <td colspan="2" style="font-size:0.85rem; color:#2e7d32; font-weight:700; text-align:center;">
-                ✅ 100% सरकारी बिल मिलान
+              <td colspan="2" style="font-size:0.82rem; color:#15803d; font-weight:700; text-align:center;">
+                ✅ 100% सटीक मिलान
               </td>
             </tr>
           </tfoot>
         </table>
       </div>
 
-      <!-- EXACT BOTTOM BANNER FROM USER'S IMAGE -->
+      <!-- EXACT BOTTOM BANNER -->
       <div class="image-bottom-banner" id="image-bottom-banner">
         माह <span id="banner-month">नवम्बर 2026</span> यूनिट <span id="banner-prev">5493</span> से <span id="banner-curr">6100</span> कुल यूनिट =<span id="banner-units">607</span> कुल राशि <span id="banner-amount">4970</span>
       </div>
 
-      <!-- MAIN ACTION BUTTONS -->
-      <div class="action-bar" style="margin-top: 25px;">
-        <button id="btn-open-preview" class="btn btn-secondary" title="रंगीन व आकर्षक Common Bill A4 शीट देखें">
-          👁️ Common Sheet प्रीव्यू (रंगीन व आकर्षक)
-        </button>
-        <button id="btn-print-master" class="btn btn-primary" title="पूरे कॉम्प्लेक्स का रंगीन व आकर्षक A4 प्रिंट (Master Sheet / PDF)">
+      <!-- MAIN ACTION BUTTONS BAR -->
+      <div class="action-bar-compact">
+        <button id="btn-print-master" class="btn btn-primary" title="पूरे कॉम्प्लेक्स का रंगीन A4 प्रिंट (Master Sheet / PDF)">
           🖨️ Common Sheet प्रिंट / PDF (रंगीन A4)
         </button>
         <button id="btn-print-slips" class="btn btn-outline" title="8 किरायेदारों की अलग-अलग कटिंग पर्चियाँ प्रिंट">
           🏷️ 8 किरायेदार पर्चियाँ (Slips)
         </button>
+        <button id="btn-open-preview" class="btn btn-secondary" title="रंगीन व आकर्षक Common Bill A4 शीट देखें">
+          👁️ Sheet प्रीव्यू
+        </button>
         <button id="btn-save-month" class="btn btn-success" title="बिल सेव करें और वर्तमान को अगली बार के लिए गत बनाएं">
           💾 बिल सेव करें (ऑटो गत रीडिंग)
         </button>
         <button id="btn-export-csv" class="btn btn-outline" title="Excel / CSV फाइल डाउनलोड करें">
-          📥 CSV एक्सपोर्ट
+          📥 CSV
         </button>
       </div>
     </div>
@@ -292,23 +236,23 @@
 
   <!-- COMMON SHEET A4 LIVE PREVIEW MODAL -->
   <div id="preview-modal" class="modal-overlay hidden">
-    <div class="modal-content" style="max-width: 900px; width: 95%; max-height: 92vh; overflow-y: auto;">
+    <div class="modal-content" style="max-width: 880px; width: 95%; max-height: 92vh; overflow-y: auto;">
       <div class="modal-header">
         <div class="modal-title">📄 Common Master Bill - A4 रंगीन व आकर्षक प्रीव्यू</div>
         <button class="btn-close" id="btn-close-preview">&times;</button>
       </div>
-      <div style="background: #e2e8f0; padding: 20px; border-radius: 8px; overflow-x: auto;">
-        <div id="preview-sheet-target" style="background:#fff; box-shadow: 0 4px 25px rgba(0,0,0,0.18); border-radius:8px;">
+      <div style="background: #e2e8f0; padding: 16px; border-radius: 8px; overflow-x: auto;">
+        <div id="preview-sheet-target" style="background:#fff; box-shadow: 0 4px 20px rgba(0,0,0,0.18); border-radius:8px;">
           <!-- Dynamically Injected Master Sheet -->
         </div>
       </div>
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; flex-wrap:wrap; gap:10px;">
-        <span style="font-size:0.85rem; color:var(--text-muted);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; flex-wrap:wrap; gap:10px;">
+        <span style="font-size:0.82rem; color:var(--text-muted);">
           💡 यह शीट रंगीन, आकर्षक और आधुनिक डिज़ाइन में तैयार की गई है (दशमलव मुक्त एवं 100% सटीक मिलान)।
         </span>
-        <div style="display:flex; gap:10px;">
-          <button class="btn btn-outline" id="btn-preview-close-2">बंद करें</button>
-          <button class="btn btn-primary" id="btn-preview-print-now">🖨️ अभी प्रिंट / PDF सेव करें</button>
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-sm btn-outline" id="btn-preview-close-2">बंद करें</button>
+          <button class="btn btn-sm btn-primary" id="btn-preview-print-now">🖨️ अभी प्रिंट / PDF सेव करें</button>
         </div>
       </div>
     </div>
@@ -316,19 +260,19 @@
 
   <!-- WHATSAPP MESSAGE PREVIEW MODAL -->
   <div id="wa-modal" class="modal-overlay hidden">
-    <div class="modal-content" style="max-width: 500px;">
+    <div class="modal-content" style="max-width: 480px;">
       <div class="modal-header">
         <div class="modal-title">📲 WhatsApp रसीद भेजें</div>
         <button class="btn-close" id="btn-close-wa">&times;</button>
       </div>
-      <div style="margin-bottom: 14px;">
+      <div style="margin-bottom: 12px;">
         <label style="font-size:0.85rem; font-weight:600; color:var(--text-muted);">किरायेदार का मोबाइल नंबर (वैकल्पिक):</label>
         <input type="tel" id="wa-phone-input" class="form-control" placeholder="जैसे 9982151938" style="margin-top:4px;" />
       </div>
-      <div style="background:#e8f5e9; border:1px solid #c8e6c9; border-radius:8px; padding:12px; font-family:monospace; font-size:0.9rem; white-space:pre-wrap; line-height:1.5; color:#1b5e20;" id="wa-preview-text"></div>
-      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:16px;">
-        <button class="btn btn-outline" id="btn-copy-wa">📋 टेक्स्ट कॉपी करें</button>
-        <button class="btn btn-success" id="btn-send-wa">🚀 WhatsApp पर भेजें</button>
+      <div style="background:#e8f5e9; border:1px solid #c8e6c9; border-radius:8px; padding:12px; font-family:monospace; font-size:0.88rem; white-space:pre-wrap; line-height:1.5; color:#1b5e20;" id="wa-preview-text"></div>
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:14px;">
+        <button class="btn btn-sm btn-outline" id="btn-copy-wa">📋 टेक्स्ट कॉपी करें</button>
+        <button class="btn btn-sm btn-success" id="btn-send-wa">🚀 WhatsApp पर भेजें</button>
       </div>
     </div>
   </div>
@@ -348,27 +292,27 @@
 
   <!-- PWA INSTALL GUIDANCE MODAL -->
   <div id="install-modal" class="modal-overlay hidden">
-    <div class="modal-content" style="max-width: 440px;">
+    <div class="modal-content" style="max-width: 420px;">
       <div class="modal-header">
         <div class="modal-title">📲 मोबाइल पर ऐप इनस्टॉल करें (Install App)</div>
         <button class="btn-close" id="btn-close-install">&times;</button>
       </div>
-      <p style="font-size:0.92rem; margin-bottom:12px;">इस ऐप को अपने फोन पर एक असली मोबाइल ऐप की तरह इंस्टॉल कर सकते हैं:</p>
-      <div style="background:#eff6ff; padding:12px; border-radius:8px; border-left:4px solid var(--primary); margin-bottom:10px;">
-        <b style="color:var(--primary); font-size:0.88rem;">📱 Android / Chrome:</b>
-        <p style="font-size:0.88rem; margin-top:4px;">नीचे <b>'अभी इंस्टॉल करें'</b> दबाएं या ब्राउज़र मेनू (⋮) से <b>'Install App' / 'Add to Home screen'</b> चुनें।</p>
+      <p style="font-size:0.9rem; margin-bottom:12px;">इस ऐप को अपने फोन पर एक असली मोबाइल ऐप की तरह इंस्टॉल कर सकते हैं:</p>
+      <div style="background:#eff6ff; padding:10px 12px; border-radius:8px; border-left:4px solid var(--primary); margin-bottom:10px;">
+        <b style="color:var(--primary); font-size:0.85rem;">📱 Android / Chrome:</b>
+        <p style="font-size:0.85rem; margin-top:3px;">नीचे <b>'अभी इंस्टॉल करें'</b> दबाएं या ब्राउज़र मेनू (⋮) से <b>'Install App' / 'Add to Home screen'</b> चुनें।</p>
       </div>
-      <div style="background:#fffbeb; padding:12px; border-radius:8px; border-left:4px solid #f59e0b;">
-        <b style="color:#b45309; font-size:0.88rem;">🍏 iPhone / iPad (Safari):</b>
-        <p style="font-size:0.88rem; margin-top:4px;">सफारी में नीचे शेयर बटन (Share ⬆) दबाएं और <b>'Add to Home Screen'</b> चुनें।</p>
+      <div style="background:#fffbeb; padding:10px 12px; border-radius:8px; border-left:4px solid #f59e0b;">
+        <b style="color:#b45309; font-size:0.85rem;">🍏 iPhone / iPad (Safari):</b>
+        <p style="font-size:0.85rem; margin-top:3px;">सफारी में नीचे शेयर बटन (Share ⬆) दबाएं और <b>'Add to Home Screen'</b> चुनें।</p>
       </div>
-      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:16px;">
-        <button id="btn-install-ok" class="btn btn-outline">बंद करें</button>
-        <button id="btn-trigger-pwa-install" class="btn btn-primary">📲 अभी इंस्टॉल करें</button>
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:14px;">
+        <button id="btn-install-ok" class="btn btn-sm btn-outline">बंद करें</button>
+        <button id="btn-trigger-pwa-install" class="btn btn-sm btn-primary">📲 अभी इंस्टॉल करें</button>
       </div>
     </div>
   </div>
 
-  <script src="app.js?v=3.0"></script>
+  <script src="app.js?v=3.1"></script>
 </body>
 </html>

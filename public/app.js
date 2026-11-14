@@ -687,7 +687,10 @@ function recalculateAll() {
 }
 
 function updateBottomBanner() {
-  document.getElementById('banner-month').textContent = appState.billMonth || 'चालू माह';
+  const monthStr = appState.billMonth || 'चालू माह';
+  document.getElementById('banner-month').textContent = monthStr;
+  const summaryMonth = document.getElementById('summary-month');
+  if (summaryMonth) summaryMonth.textContent = monthStr;
   document.getElementById('banner-prev').textContent = appState.govtPrev || 0;
   document.getElementById('banner-curr').textContent = appState.govtCurr || 0;
   document.getElementById('banner-units').textContent = appState.govtUnits || 0;
