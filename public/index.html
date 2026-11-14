@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#1565c0" />
+  <meta name="description" content="Master Sub Meter Bill Generator - AVVNL Electricity Bill Splitter" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Bill Generator" />
+  
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  
+  <style>
+    :root {
+      --primary: #1565c0; --primary-dark: #0d47a1; --primary-light: #e3f2fd;
+      --secondary: #ff9800; --danger: #f44336; --success: #4caf50;
+      --bg: #f5f7fa; --card-bg: #ffffff; --text: #333333; --text-light: #666666;
+      --border: #e0e0e0; --radius: 12px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Roboto', 'Noto Sans Devanagari', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 40px; }
+    header { background: var(--primary); color: white; padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+    .header-brand { display: flex; align-items: center; gap: 8px; font-size: 1.15rem; font-weight: 600; }
+    .header-brand span { font-size: 1.4rem; }
+    
+    /* Install Button */
+    .btn-install {
+      background: #ffb300;
+      color: #0d47a1;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 7px 14px;
+      border-radius: 20px;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .btn-install:hover {
+      background: #ffa000;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+    .btn-install:active { transform: translateY(0); }
+
+    .container { max-width: 600px; margin: 0 auto; padding: 15px; }
+    .card { background: var(--card-bg); border-radius: var(--radius); padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .card-title { font-size: 1.1rem; color: var(--primary); margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center;}
+    
+    .btn { padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.95rem; font-weight: 500; transition: 0.2s; }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:active { background: var(--primary-dark); }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-secondary { background: var(--secondary); color: white; }
+    .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
+    .btn-icon { background: transparent; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text-light); }
+    
+    input[type="text"], input[type="tel"], input[type="number"] { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 1rem; margin-bottom: 10px; }
+    
+    /* K-Number List */
+    .k-list { display: flex; flex-direction: column; gap: 10px; }
+    .k-item { display: flex; justify-content: space-between; align-items: center; background: var(--primary-light); padding: 12px; border-radius: 8px; border: 1px solid #bbdefb; }
+    .k-item-info { flex: 1; cursor: pointer; }
+    .k-number { font-weight: 600; font-size: 1.1rem; color: var(--primary-dark); }
+    .k-status { font-size: 0.85rem; color: var(--text-light); margin-top: 4px; }
+    
+    /* Bill Details */
+    .bill-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; background: #fafafa; padding: 15px; border-radius: 8px; border: 1px solid var(--border); }
+    .bill-stat { display: flex; flex-direction: column; }
+    .bill-stat label { font-size: 0.85rem; color: var(--text-light); }
+    .bill-stat span { font-size: 1.2rem; font-weight: bold; color: var(--primary-dark); }
+    
+    /* Sub Meters */
+    .submeter-list { margin-top: 15px; }
+    .submeter-item { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #fff; padding: 15px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 10px; position: relative; }
+    .submeter-item .sm-name { grid-column: span 2; font-weight: bold; margin-bottom: 5px; }
+    .sm-delete { position: absolute; top: 15px; right: 15px; color: var(--danger); }
+    .sm-result { grid-column: span 2; background: #e8f5e9; padding: 10px; border-radius: 6px; font-weight: bold; color: #2e7d32; display: flex; justify-content: space-between;}
+    
+    .add-form { display: flex; gap: 10px; margin-bottom: 15px; }
+    .add-form input { margin-bottom: 0; }
+    
+    .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid #fff; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    
+    /* Modal */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.55); backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1000; padding: 15px;
+    }
+    .modal-card {
+      background: #ffffff; border-radius: 14px; max-width: 440px; width: 100%;
+      padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      animation: modal-pop 0.25s ease-out;
+    }
+    @keyframes modal-pop {
+      from { opacity: 0; transform: scale(0.92); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+    .modal-header h3 { font-size: 1.15rem; color: var(--primary); }
+    .install-step { background: #f5f7fa; padding: 12px; border-radius: 8px; border-left: 4px solid var(--primary); margin-bottom: 10px; }
+    .step-badge { font-size: 0.75rem; font-weight: bold; background: #e3f2fd; color: #1565c0; padding: 3px 8px; border-radius: 4px; display: inline-block; margin-bottom: 6px; }
+
+    .hidden { display: none !important; }
+  </style>
+  <title>Master Sub Meter Bill Generator</title>
+</head>
+<body>
+
+  <header>
+    <div class="header-brand">
+      <span>⚡</span>
+      <h1>Master Bill Generator</h1>
+    </div>
+    <button id="btn-install-app" class="btn-install hidden" title="ऐप इंस्टॉल करें (Install App)">
+      📲 App Install
+    </button>
+  </header>
+
+  <div class="container">
+    
+    <!-- SECTION 1: MANAGE K-NUMBERS -->
+    <div class="card">
+      <div class="card-title">📋 Saved K-Numbers</div>
+      <div class="add-form">
+        <input type="tel" id="new-k-number" placeholder="Enter new K-Number" maxlength="15" />
+        <button id="btn-add-k" class="btn btn-primary">Add</button>
+      </div>
+      <div class="k-list" id="k-numbers-list">
+        <!-- List injected by JS -->
+      </div>
+    </div>
+
+    <!-- SECTION 2: BILL FETCH & SUMMARY (Hidden until a K-Number is selected) -->
+    <div class="card hidden" id="bill-section">
+      <div class="card-title">
+        <span>⚡ Bill for <span id="active-k-display"></span></span>
+        <div>
+          <button id="btn-fetch-bill" class="btn btn-secondary">Fetch Latest</button>
+        </div>
+      </div>
+      
+      <div id="fetch-loader" class="hidden" style="text-align:center; padding: 20px;">
+        <p>Fetching Bill... Please wait.</p>
+      </div>
+      
+      <div id="bill-details" class="hidden">
+        <div class="bill-summary">
+          <div class="bill-stat">
+            <label>Customer Name</label>
+            <span id="bill-name" style="font-size: 1rem;">-</span>
+          </div>
+          <div class="bill-stat">
+            <label>Bill Month</label>
+            <span id="bill-month" style="font-size: 1rem;">-</span>
+          </div>
+          <div class="bill-stat">
+            <label>Total Amount</label>
+            <span id="bill-amount">₹0</span>
+          </div>
+          <div class="bill-stat">
+            <label>Total Units</label>
+            <span id="bill-units">0</span>
+          </div>
+          <div class="bill-stat" style="grid-column: span 2;">
+            <label>Per Unit Cost (₹)</label>
+            <span id="bill-per-unit">₹0.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: SUB METER CALCULATOR (Hidden until bill is loaded) -->
+    <div class="card hidden" id="submeter-section">
+      <div class="card-title">🔢 Divide Bill (Sub-Meters)</div>
+      
+      <div class="add-form">
+        <input type="text" id="new-sm-name" placeholder="Sub-Meter Name (e.g. Flat 1)" />
+        <button id="btn-add-sm" class="btn btn-outline">+ Add</button>
+      </div>
+      
+      <div class="submeter-list" id="submeters-list">
+        <!-- Submeters injected by JS -->
+      </div>
+      
+      <div class="bill-summary" style="margin-top: 15px; background: #e3f2fd; border-color: #90caf9;">
+        <div class="bill-stat">
+          <label>Remaining Units (Main)</label>
+          <span id="rem-units">0</span>
+        </div>
+        <div class="bill-stat">
+          <label>Remaining Amount</label>
+          <span id="rem-amount">₹0</span>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+  <!-- INSTALL INSTRUCTIONS MODAL (Fallback for iOS Safari / Desktop) -->
+  <div id="install-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>📲 ऐप इंस्टॉल करें (Install App)</h3>
+        <button id="btn-close-modal" class="btn-icon">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 12px; font-weight: 500; font-size: 0.95rem;">इस ऐप को अपने फोन या कंप्यूटर में एक ऐप की तरह इंस्टॉल कर सकते हैं:</p>
+        <div class="install-step">
+          <span class="step-badge">Android / Chrome</span>
+          <p style="font-size: 0.9rem; line-height: 1.4;">स्क्रीन पर <b>'Install'</b> बटन दबाएं या ब्राउज़र के ऊपरी मेनू (⋮) से <b>'Install app'</b> / <b>'Add to Home screen'</b> चुनें।</p>
+        </div>
+        <div class="install-step">
+          <span class="step-badge" style="background:#ede7f6; color:#4a148c;">iPhone / iPad (Safari)</span>
+          <p style="font-size: 0.9rem; line-height: 1.4;">सफारी ब्राउज़र में नीचे शेयर बटन (<b>Share ⎋ / ⬆</b>) दबाएं और फिर <b>'Add to Home Screen'</b> (होम स्क्रीन में जोड़ें) चुनें।</p>
+        </div>
+      </div>
+      <div style="text-align: right; margin-top: 15px;">
+        <button id="btn-modal-ok" class="btn btn-primary" style="padding: 8px 18px;">समझ गया (OK)</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
